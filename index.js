@@ -1,14 +1,14 @@
-(function(global, factory) {
+(function (global, factory) {
   if (typeof define === 'function' && define.amd) {
-    define(function() {
-      return factory(global, global.document);
+    define(function () {
+      return factory(global, typeof document !== 'undefined' ? global.document : undefined);
     });
   } else if (typeof module !== 'undefined' && module.exports) {
-    module.exports = factory(global, global.document);
+    module.exports = factory(global, typeof document !== 'undefined' ? global.document : undefined);
   } else {
-      global.normalize = factory(global, global.document);
+    global.normalize = factory(global, typeof document !== 'undefined' ? global.document : undefined);
   }
-} (typeof window !== 'undefined' ? window : this, function (window, document) {
+})(typeof window !== 'undefined' ? window : this, function (window, document) {
   var charmap = require('./charmap.json');
   var regex = null;
   var current_charmap;
@@ -20,14 +20,14 @@
 
     regex = (regex && old_charmap === current_charmap) ? regex : buildRegExp(current_charmap);
 
-    return str.replace(regex, function(charToReplace) {
+    return str.replace(regex, function (charToReplace) {
       return current_charmap[charToReplace.charCodeAt(0)] || charToReplace;
     });
   }
 
-  function buildRegExp(charmap){
-     return new RegExp('[' + Object.keys(charmap).map(function(code) {return String.fromCharCode(code); }).join(' ') + ']', 'g');
-   }
+  function buildRegExp(charmap) {
+    return new RegExp('[' + Object.keys(charmap).map(function (code) { return String.fromCharCode(code); }).join(' ') + ']', 'g');
+  }
 
   return normalize;
-}));
+});
